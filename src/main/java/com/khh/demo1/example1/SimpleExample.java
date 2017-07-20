@@ -19,7 +19,7 @@ public class SimpleExample {
 
         Date date = new Date();
         System.out.println("现在的时间是: " + date);
-        //计算机在下一个回合分钟的时间
+        //计算机在下一分钟的时间
         Date start = DateBuilder.evenMinuteDate(date);
 
         //定义工作并把它与HelloJob.class联系起来

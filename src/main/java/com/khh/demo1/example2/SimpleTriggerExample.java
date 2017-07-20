@@ -19,7 +19,7 @@ public class SimpleTriggerExample {
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         Scheduler scheduler = schedulerFactory.getScheduler();
 
-        //在未来几秒钟内得到一个“回合”时间…
+        //开始时间是15秒后
         Date startTime = DateBuilder.nextGivenSecondDate(null, 15);
 
         //job1 只会运行一次在 at date/time "ts"
