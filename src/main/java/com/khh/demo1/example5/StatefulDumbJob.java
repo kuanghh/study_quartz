@@ -10,7 +10,7 @@ import java.util.Date;
  * 这个工作为了单元测试的目的
  */
 @PersistJobDataAfterExecution
-@DisallowConcurrentExecution
+@DisallowConcurrentExecution//保证任务不会并发执行
 public class StatefulDumbJob implements Job {
 
     // 静态常量，作为任务在调用间，保持数据的键(key)
