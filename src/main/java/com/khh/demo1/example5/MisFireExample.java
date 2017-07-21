@@ -37,7 +37,9 @@ public class MisFireExample {
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
                         .withIntervalInSeconds(3)
                         .repeatForever()
+                        //设置失败指令:表示当job因为job执行时间过长 而 错过触发器时 job执行完后立即再次执行job
                         .withMisfireHandlingInstructionNowWithExistingCount()).build();
+
 
         ft = scheduler.scheduleJob(job, trigger);
         System.out.println(job.getKey() + " will run at: " + ft + " and repeat: " + trigger.getRepeatCount() + " times, every "
