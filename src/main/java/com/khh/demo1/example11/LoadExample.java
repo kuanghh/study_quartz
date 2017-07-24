@@ -41,7 +41,8 @@ public class LoadExample {
 
             //requestRecovery() ----> 如果遇到“恢复”或“失败”的情况，指示调度程序是否应该重新执行该作业，默认为false
             //当作业在运行时，调度失败，请重新执行该作业
-            JobDetail job = JobBuilder.newJob(SimpleJob.class).withIdentity("job" + i, "group_1").requestRecovery(true).build();
+            //本人觉得requestRecovery应该有true属性，但官方文档是选择默认false属性的
+            JobDetail job = JobBuilder.newJob(SimpleJob.class).withIdentity("job" + i, "group_1").requestRecovery().build();
 
             long timeDalay = (long) (Math.random() * 25000);
             job.getJobDataMap().put(SimpleJob.DELAY_TIME,timeDalay);
