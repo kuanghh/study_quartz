@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <context:component-scan base-package="com.khh.demo2" />
+
+    <!--
+        有两种方式在 Spring 中使用 Quartz 来配置一个作业。
+             1. 使用 MethodInvokingJobDetailFactoryBean
+                        这种方式在你想要调用特定 bean 的一个方法的时候很是方便，比另一种方法要简单的多。
+             2.使用 JobDetailFactoryBean
+                         如果你需要更高级的设置，需要给作业传递数据，想更加灵活的话就使用这种方式。
+    -->
+    <!-- 方法1 -->
+    <bean id="simpleJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="myBean" />
+        <property name="targetMethod" value="printMessage" />
+    </bean>
+
+    <!-- 方法2 -->
+    <bean id="firstComplexJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.khh.demo2.job.FirstScheduledJob"/>
+        <property name="jobDataMap" >
+            <map>
+                <entry key="anotherBean" value-ref="anotherBean"/>
+            </map>
+        </property>
+        <property name="durability" value="true"/>
+    </bean>
+
+
+    <!--
+        配置 Quartz 调度时要使用到的触发器
+            1.简单触发器，使用 SimpleTriggerFactoryBean
+
+            2.计划触发器，使用 CronTriggerFactoryBean
+    -->
+
+    <bean id="simpleTrigger"  class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="simpleJobDetail" />
+        <property name="startDelay" value="1000" />
+        <property name="repeatInterval" value="2000" /><!-- 每隔2秒运行一次 -->
+    </bean>
+
+    <bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="firstComplexJobDetail" />
+        <!--<property name="cronExpression" value="0/5 * * ? * SAT-SUN" />-->
+        <property name="cronExpression" value="0/5 * * ? * *" />
+    </bean>
+
+
+    <!--
+       配置创建定配置 Quartz 调度器的 SchedulerFactoryBean
+   -->
+    <bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <ref bean="simpleJobDetail" />
+                <ref bean="firstComplexJobDetail" />
+            </list>
+        </property>
+
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTrigger" />
+                <ref bean="cronTrigger" />
+            </list>
+        </property>
+    </bean>
+</beans>
