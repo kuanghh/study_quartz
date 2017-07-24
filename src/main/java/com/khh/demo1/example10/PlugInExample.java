@@ -18,7 +18,8 @@ public class PlugInExample {
         Scheduler scheduler = null;
 
         try {
-            scheduler = sf.getScheduler();//这里默认加载resources下的quartz.xml文件
+            System.getProperties().setProperty("org.quartz.properties", "demo1/example10/quartz.properties");
+            scheduler = sf.getScheduler();//如果没有上面一行的话，这里默认加载resources下的quartz.xml文件
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
