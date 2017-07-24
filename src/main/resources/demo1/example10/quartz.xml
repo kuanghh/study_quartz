@@ -26,8 +26,8 @@
             <name>TestDurableJob</name>
             <job-class>com.khh.demo1.example10.SimpleJob</job-class>
 			<!-- 任务完成之后是否依然保留到数据库，默认false -->
-			<!--<durability>true</durability>-->
-            <!--<recover>false</recover>-->
+			<durability>true</durability>
+            <recover>false</recover>
         </job>
 	    
 	    <trigger>
